@@ -4,6 +4,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -27,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListeners() {
         //TODO self destruct button
+        buttonSelfDestruct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSelfDestructSequence();
+            }
+        });
 
         switchUseless.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -39,6 +46,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void startSelfDestructSequence() {
+        // disable the button
+        buttonSelfDestruct.setEnabled(false);
+        //start a 10 second countdown timer that updates the display every second
+        new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                buttonSelfDestruct.setText("Destruct in: " + millisUntilFinished/1000);
+            }
+
+            @Override
+            public void onFinish() {
+               finish();
+               System.exit(0);
+            }
+
+        }.start();
+        //want the button to show the countdown
+
+        //at the end, we're going to close the activity
+        //call the finish method
     }
 
     private void startSwitchOffTimer() {
